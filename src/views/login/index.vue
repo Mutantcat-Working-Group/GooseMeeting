@@ -3,8 +3,13 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">登录</h3>
+        <h3 class="title">大鹅会议</h3>
+        <p class="version">v{{ version }}</p>
       </div>
+
+      <el-form-item v-if="desktop" class="server-field">
+        <el-input v-model="serverUrl" aria-label="服务器地址" placeholder="https://会议服务器地址" prefix-icon="el-icon-link" @change="saveServer" />
+      </el-form-item>
 
       <el-form-item prop="username">
         <span class="svg-container">
@@ -47,7 +52,7 @@
 
       <el-button :loading="loading" type="primary" style="width:80%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
+      <el-button class="thirdparty-button" type="primary" @click="openRegister">
         注册
       </el-button>
 
@@ -61,6 +66,8 @@
 
 <script>
 import Register from './components/Register'
+import { getServerUrl, setServerUrl, isDesktop } from '@/utils/server'
+import { version } from '../../../package.json'
 
 export default {
   name: 'Login',
@@ -88,6 +95,9 @@ export default {
       }
     }
     return {
+      desktop: isDesktop,
+      version,
+      serverUrl: isDesktop ? getServerUrl() : '',
       loginForm: {
         username: '',
         password: ''
@@ -130,6 +140,22 @@ export default {
     // window.removeEventListener('storaconnect ge', this.afterQRScan)
   },
   methods: {
+    saveServer() {
+      if (!this.desktop) return true
+      try {
+        const previous = getServerUrl()
+        const next = setServerUrl(this.serverUrl)
+        this.serverUrl = next
+        if (previous !== next) this.$store.dispatch('user/resetToken')
+        return true
+      } catch (error) {
+        this.$message.error('请输入有效的 HTTP(S) 服务器地址，不要包含账号、参数或片段')
+        return false
+      }
+    },
+    openRegister() {
+      if (this.saveServer()) this.showDialog = true
+    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
@@ -145,6 +171,7 @@ export default {
       })
     },
     handleLogin() {
+      if (!this.saveServer()) return
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -287,9 +314,14 @@ $light_gray:#eee;
     .title {
       font-size: 26px;
       color: $light_gray;
-      margin: 0px auto 40px auto;
+      margin: 0px auto 10px auto;
       text-align: center;
       font-weight: bold;
+    }
+    .version {
+      text-align: center;
+      color: $dark_gray;
+      margin-bottom: 28px;
     }
   }
 

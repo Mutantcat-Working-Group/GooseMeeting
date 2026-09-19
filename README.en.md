@@ -10,8 +10,8 @@ An open-source WebRTC video meeting frontend with audio and video calls, screen 
 
 - Product name: **大鹅会议** in Chinese and `goosemeeting` in English.
 - npm package name: `org.mutantcat.goosemeeting`. This is not an API path prefix.
-- This repository provides a Vue web client. The backend must be deployed separately; no Java packages or Maven modules are included.
-- Tauri desktop integration has not been implemented. No desktop installers or Tauri build commands are currently available.
+- Current version: **1.0.20260919**.
+- This repository provides a Vue web client and a Tauri 2 desktop client. The backend must be deployed separately; no Java packages or Maven modules are included.
 
 > Production security hardening and multi-device integration testing are still required. Read [Security and Limitations](#security-and-limitations) before deploying. Frontend management controls are not a substitute for server-side authorization.
 
@@ -25,6 +25,23 @@ An open-source WebRTC video meeting frontend with audio and video calls, screen 
 - User management, dictionary management, and spreadsheet export.
 
 WebRTC carries audio and video over peer-to-peer connections. WebSocket carries signaling and chat messages. The current multi-party peer-to-peer topology increases each client's connection count, upload bandwidth, and CPU usage as more participants join.
+
+## Desktop Downloads
+
+Download installers from [GitHub Releases](https://github.com/Mutantcat-Working-Group/GooseMeeting/releases). Node.js and Rust are not required to run them.
+
+| System | Installer | Installation |
+| --- | --- | --- |
+| Windows 10/11 x64 | `windows-x64.exe` | NSIS installer with the offline WebView2 runtime installer |
+| macOS 12+ Intel | `macos-x64.dmg` | Open and drag into Applications |
+| macOS 12+ Apple Silicon | `macos-arm64.dmg` | Open and drag into Applications |
+| Linux x64 | `linux-x64.AppImage` | Mark executable and open; Ubuntu 22.04 or a newer compatible distribution recommended |
+
+Enter the meeting server HTTP(S) address on the login screen. It is saved locally; switching servers clears the login token. There is no bundled public meeting service. The backend must allow CORS from `tauri://localhost` on macOS/Linux, `http://tauri.localhost` on Windows, and `http://127.0.0.1:1420` in development. Use trusted HTTPS/WSS in production.
+
+Both the macOS application and DMG are **ad-hoc signed**, not Developer ID signed or Apple-notarized. Gatekeeper may require approval in System Settings > Privacy & Security. Windows binaries are not commercially code-signed and may show SmartScreen warnings. Verify the release source and `SHA256SUMS.txt`; do not globally disable system security checks.
+
+Linux may need `chmod +x goosemeeting_*_linux-x64.AppImage` and FUSE 2. Without FUSE, use `--appimage-extract` and run `squashfs-root/AppRun`. Media and screen sharing depend on the system WebView, graphics drivers, codecs and OS permissions; not every distribution or WebView supports screen sharing.
 
 ## Screenshots
 
@@ -49,6 +66,7 @@ These are historical screenshots retained in the repository. Names and interface
 | Routing and state | Vue Router 3, Vuex 3 |
 | Communication | Axios, WebSocket, WebRTC, webrtc-adapter |
 | Build tooling | Vue CLI 3, Webpack 4.47, Dart Sass |
+| Desktop | Tauri 2, Rust, system WebView |
 | Quality checks | ESLint, Jest, Vue Test Utils |
 
 ## Quick Start
@@ -66,7 +84,7 @@ The project uses Dart Sass instead of Node Sass. Native Node Sass build dependen
 ```sh
 git clone https://github.com/Mutantcat-Working-Group/GooseMeeting.git
 cd GooseMeeting
-npm install --legacy-peer-deps
+npm ci --ignore-scripts
 ```
 
 Create `.env.development.local` in the project root and configure a reachable backend URL:
@@ -119,8 +137,30 @@ Camera, microphone, and screen capture require a secure context. HTTP is support
 | `npm run test:unit -- --runInBand` | Run unit tests serially |
 | `npm run build:prod` | Build production static assets |
 | `npm run build:stage` | Build in staging mode |
+| `npm run desktop:dev` | Start Tauri desktop development |
+| `npm run desktop:build -- --bundles dmg` | Build a macOS DMG on macOS |
+| `npm run desktop:build -- --bundles nsis` | Build a Windows NSIS installer on Windows |
+| `npm run desktop:build -- --bundles appimage` | Build a Linux AppImage on Linux |
+| `npm run release:check` | Validate versions and platform mapping |
+
+Desktop development requires stable Rust and the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/): Xcode command-line tools on macOS, MSVC C++ tools on Windows, and WebKitGTK 4.1 plus GStreamer on Linux. Frontend assets are embedded in the desktop bundle; development uses port 1420. Both `package-lock.json` and `src-tauri/Cargo.lock` are committed.
 
 Use `.env.staging.local` to override the staging backend URL. Unit tests cover selected regressions in signaling, media lifecycle, admin lists, and authentication state. They do not replace real-device testing of media permissions, multi-party calls, or connectivity across networks.
+
+## Automated Releases
+
+`.github/workflows/ci.yml` runs version validation, ESLint, unit tests and a web build on master pushes and pull requests. `.github/workflows/release.yml` builds four native targets when a `v*` tag is pushed. Only after every build succeeds are all four installers and SHA-256 checksums uploaded and the Release published. A failed build does not publish an incomplete new release.
+
+Update the application version in `package.json`, `package-lock.json`, `src-tauri/Cargo.toml` and `src-tauri/Cargo.lock`, commit, then push a matching version tag:
+
+```sh
+git tag v1.0.20260919
+git push origin v1.0.20260919
+```
+
+The Desktop Release workflow can also be dispatched manually with an existing version tag. It uses the built-in `GITHUB_TOKEN`; the publishing job needs `contents: write`. No Apple certificate or paid signing secret is needed for the default build.
+
+Public versions use `major.minor.YYYYMMDD`. Windows numeric resource fields are limited to 65535 per part, so packaging maps the version to `1.0.2026+919` (native four-part `1.0.2026.919`). The UI, tag, release and download filenames retain `1.0.20260919`. Moving from the upstream template's `4.2.1` establishes the product's first release version; it is not a dependency upgrade.
 
 ## Project Structure
 
@@ -139,6 +179,10 @@ src/
 mock/                  Template mock data, not a real meeting backend
 public/                Static entry assets
 tests/unit/            Unit tests
+src-tauri/             Desktop entry, bundle configuration, permissions and icons
+scripts/               Desktop build and release validation scripts
+.github/workflows/     CI and cross-platform releases
+docs/                  Release notes and implementation checklist
 vue.config.js          Frontend build and development server configuration
 ```
 

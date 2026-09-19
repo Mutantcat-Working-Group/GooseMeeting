@@ -19,5 +19,7 @@ selenium-debug.log
 *.sln
 *.local
 
-package-lock.json
 yarn.lock
+src-tauri/target/
+src-tauri/gen/schemas/
+release-artifacts/

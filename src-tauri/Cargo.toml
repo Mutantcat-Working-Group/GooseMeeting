@@ -1,0 +1,19 @@
+[package]
+name = "goosemeeting"
+version = "1.0.20260919"
+description = "GooseMeeting desktop video conferencing client"
+authors = ["GooseMeeting contributors"]
+license = "MIT"
+edition = "2021"
+rust-version = "1.77.2"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1

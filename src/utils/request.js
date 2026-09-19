@@ -2,6 +2,7 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { getServerUrl, isDesktop } from '@/utils/server'
 
 // create an axios instance
 const service = axios.create({
@@ -13,6 +14,10 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
+    if (isDesktop) {
+      config.baseURL = getServerUrl()
+      if (!config.baseURL) return Promise.reject(new Error('请先配置会议服务器地址'))
+    }
     // do something before request is sent
 
     if (store.getters.token) {

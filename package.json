@@ -1,10 +1,15 @@
 {
   "name": "org.mutantcat.goosemeeting",
-  "version": "4.2.1",
+  "version": "1.0.20260919",
   "description": "大鹅会议 (goosemeeting) - 基于 WebRTC 的视频会议、语音通话与屏幕共享应用",
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "tauri": "tauri",
+    "desktop:dev": "tauri dev",
+    "desktop:build": "node scripts/desktop-build.cjs",
+    "desktop:frontend": "node scripts/desktop-frontend.cjs",
+    "release:check": "node scripts/release-version.cjs",
     "dev": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
@@ -73,6 +78,7 @@
     "xlsx": "0.14.1"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "2.11.4",
     "@babel/core": "7.0.0",
     "@babel/register": "7.0.0",
     "@vue/cli-plugin-babel": "3.12.1",
@@ -105,8 +111,8 @@
     "webpack": "4.47.0"
   },
   "engines": {
-    "node": ">=8.9",
-    "npm": ">= 3.0.0"
+    "node": ">=22",
+    "npm": ">=10"
   },
   "browserslist": [
     "> 1%",
