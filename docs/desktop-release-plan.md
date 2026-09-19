@@ -10,10 +10,21 @@ and Linux x64 AppImage. Bundle frontend assets and retain the separate backend.
 - [x] Add Tauri configuration, media permission declarations, icons and build commands.
 - [x] Configure server selection and desktop-safe authentication storage.
 - [x] Add a locked dependency graph and CI validation.
-- [ ] Build four targets on native GitHub runners; sign and verify macOS app/DMG.
-- [ ] Publish only after all artifacts pass checks, including SHA-256 manifest.
+- [x] Build four targets on native GitHub runners; sign and verify macOS app/DMG.
+- [x] Publish only after all artifacts pass checks, including SHA-256 manifest.
 - [x] Update Chinese and English documentation and installation limitations.
-- [ ] Run local checks, push CI, tag the version and inspect the real release.
+- [x] Run local checks, push CI, tag the version and inspect the real release.
+
+## Verified Release: 2026-09-19
+
+- Version/tag: `1.0.20260919` / `v1.0.20260919`, source commit `b06ac46`.
+- [Native preflight](https://github.com/Mutantcat-Working-Group/GooseMeeting/actions/runs/35429949452): all four targets passed; publishing skipped as intended.
+- [Tag-triggered release](https://github.com/Mutantcat-Working-Group/GooseMeeting/actions/runs/35430643222): validation, all four builds and publication passed.
+- [Published release](https://github.com/Mutantcat-Working-Group/GooseMeeting/releases/tag/v1.0.20260919): Windows x64 NSIS EXE, macOS x64/ARM64 DMGs, Linux x64 AppImage and `SHA256SUMS.txt` present.
+- Local checks: 75 tests across 14 suites, ESLint, Cargo check/format and macOS production bundle passed. Desktop login layout and server persistence after restart were checked.
+- Both macOS jobs verified ad-hoc application signatures, signed the DMGs and verified image checksums. The downloaded ARM64 preflight DMG was also mounted and its application signature and architecture verified locally.
+- No live meeting backend was available for end-to-end calls. Windows/Linux installer launch, actual media capture and screen sharing across operating systems remain real-device test coverage gaps. Ad-hoc signing is not Apple notarization.
+- GitHub emitted action-runtime deprecation notices for v4 actions, automatically using Node 24; these were warnings, not build failures.
 
 ## Version Policy
 
