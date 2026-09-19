@@ -160,6 +160,8 @@ git push origin v1.0.20260919
 
 The Desktop Release workflow can also be dispatched manually with an existing version tag. It uses the built-in `GITHUB_TOKEN`; the publishing job needs `contents: write`. No Apple certificate or paid signing secret is needed for the default build.
 
+Before tagging, dispatch the same workflow with `tag` set to `master` and `preflight` enabled. Preflight builds and verifies all native installers but only saves Actions artifacts, without creating a Release. The Linux client requests camera and microphone access through a native dialog and does not automatically grant denied requests.
+
 Public versions use `major.minor.YYYYMMDD`. Windows numeric resource fields are limited to 65535 per part, so packaging maps the version to `1.0.2026+919` (native four-part `1.0.2026.919`). The UI, tag, release and download filenames retain `1.0.20260919`. Moving from the upstream template's `4.2.1` establishes the product's first release version; it is not a dependency upgrade.
 
 ## Project Structure

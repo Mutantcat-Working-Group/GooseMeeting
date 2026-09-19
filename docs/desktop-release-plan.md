@@ -6,13 +6,13 @@ and Linux x64 AppImage. Bundle frontend assets and retain the separate backend.
 
 ## Implementation Checklist
 
-- [ ] Add tests for release version mapping and saved backend configuration.
-- [ ] Add Tauri configuration, media permission declarations, icons and commands.
-- [ ] Configure server selection and desktop-safe authentication storage.
-- [ ] Add a locked dependency graph and CI validation.
+- [x] Add tests for release version mapping and saved backend configuration.
+- [x] Add Tauri configuration, media permission declarations, icons and build commands.
+- [x] Configure server selection and desktop-safe authentication storage.
+- [x] Add a locked dependency graph and CI validation.
 - [ ] Build four targets on native GitHub runners; sign and verify macOS app/DMG.
 - [ ] Publish only after all artifacts pass checks, including SHA-256 manifest.
-- [ ] Update Chinese and English documentation and installation limitations.
+- [x] Update Chinese and English documentation and installation limitations.
 - [ ] Run local checks, push CI, tag the version and inspect the real release.
 
 ## Version Policy

@@ -263,6 +263,14 @@ $cursor: #fff;
     border-radius: 5px;
     color: #454545;
   }
+
+  .server-field .el-input {
+    width: 100%;
+
+    input {
+      padding-left: 35px;
+    }
+  }
 }
 </style>
 

@@ -5,9 +5,13 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing version tag to build and release
+        description: Existing version tag (or branch for preflight)
         required: true
         type: string
+      preflight:
+        description: Build and verify installers without publishing a release
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -34,11 +38,16 @@ jobs:
       - name: Validate release tag
         id: version
         env:
-          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+          BUILD_REF: ${{ inputs.tag || github.ref_name }}
+          PREFLIGHT: ${{ inputs.preflight || false }}
         run: |
-          npm run release:check
-          test "$(git rev-parse HEAD)" = "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")"
-          echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          if [ "$PREFLIGHT" = "true" ]; then
+            npm run release:check
+          else
+            RELEASE_TAG="$BUILD_REF" npm run release:check
+            test "$(git rev-parse HEAD)" = "$(git rev-parse "refs/tags/$BUILD_REF^{commit}")"
+          fi
+          echo "tag=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - run: npm run lint
       - run: npm run test:unit -- --runInBand
 
@@ -119,6 +128,7 @@ jobs:
 
   publish:
     needs: [validate, build]
+    if: ${{ !inputs.preflight }}
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -138,7 +148,7 @@ jobs:
       - name: Upload complete release and publish
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ needs.validate.outputs.tag }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
         run: |
           if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
             gh release create "$RELEASE_TAG" --verify-tag --draft --title "大鹅会议 $RELEASE_TAG" --notes-file docs/release-notes.md
