@@ -30,11 +30,17 @@
           <router-link to="/">
             <el-dropdown-item>Dashboard</el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>Github</el-dropdown-item>
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/Mutantcat-Working-Group/GooseMeeting">
+            <el-dropdown-item>GitHub</el-dropdown-item>
           </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/Mutantcat-Working-Group/GooseMeeting/blob/master/README.md">
+            <el-dropdown-item>中文文档</el-dropdown-item>
+          </a>
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/Mutantcat-Working-Group/GooseMeeting/blob/master/README.en.md">
+            <el-dropdown-item>English Docs</el-dropdown-item>
+          </a>
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/Mutantcat-Working-Group/GooseMeeting/blob/master/LICENSE">
+            <el-dropdown-item>MIT License</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">Log Out</span>

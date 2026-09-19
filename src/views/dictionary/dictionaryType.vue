@@ -186,7 +186,7 @@ export default {
   },
   data() {
     return {
-      list: null,
+      list: [],
       total: 0,
       listLoading: true,
       multipleSelection: [],
@@ -213,8 +213,6 @@ export default {
         create: '添加'
       },
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: '标题必填', trigger: 'blur' }]
       },
       downloadLoading: false,
@@ -357,9 +355,12 @@ export default {
     },
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      return fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = Number(response.data.total)
+      }).catch(() => {
+        // The request interceptor reports the API error.
+      }).finally(() => {
         this.listLoading = false
       })
     },
@@ -409,17 +410,20 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-        import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-          const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-          const data = this.formatJson(filterVal, this.list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: 'table-list'
-          })
-          this.downloadLoading = false
+      return import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['ID', '标题', '备注', '排序', '更新日期', '添加日期']
+        const filterVal = ['id', 'title', 'remark', 'sort', 'updateTime', 'insertTime']
+        const data = this.formatJson(filterVal, this.list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'dictionary-type'
         })
+      }).catch(() => {
+        this.$message.error('导出失败，请重试')
+      }).finally(() => {
+        this.downloadLoading = false
+      })
     },
     toggleAllSelection(rows) {
       if (rows) {
@@ -429,8 +433,8 @@ export default {
       }
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
+      return (jsonData || []).map(v => filterVal.map(j => {
+        if (j === 'updateTime' || j === 'insertTime') {
           return parseTime(v[j])
         } else {
           return v[j]

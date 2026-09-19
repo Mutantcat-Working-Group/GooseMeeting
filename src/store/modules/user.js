@@ -53,14 +53,14 @@ const actions = {
         const { data } = response
 
         if (!data) {
-          reject('验证失败，请重新登录')
+          return reject('验证失败，请重新登录')
         }
 
         const { roles, name, avatar, introduction } = data
 
         // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo：角色必须为非null数组！')
+        if (!Array.isArray(roles) || roles.length <= 0) {
+          return reject('getInfo：角色必须为非null数组！')
         }
 
         commit('SET_ROLES', roles)
@@ -100,33 +100,30 @@ const actions = {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
       removeToken()
+      resetRouter()
       resolve()
     })
   },
 
   // dynamically modify permissions
-  changeRoles({ commit, dispatch }, role) {
-    return new Promise(async resolve => {
-      const token = role + '-token'
+  async changeRoles({ commit, dispatch }, role) {
+    const token = role + '-token'
 
-      commit('SET_TOKEN', token)
-      setToken(token)
+    commit('SET_TOKEN', token)
+    setToken(token)
 
-      const { roles } = await dispatch('getInfo')
+    const { roles } = await dispatch('getInfo')
 
-      resetRouter()
+    resetRouter()
 
-      // generate accessible routes map based on roles
-      const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+    // generate accessible routes map based on roles
+    const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
 
-      // dynamically add accessible routes
-      router.addRoutes(accessRoutes)
+    // dynamically add accessible routes
+    router.addRoutes(accessRoutes)
 
-      // reset visited views and cached views
-      dispatch('tagsView/delAllViews', null, { root: true })
-
-      resolve()
-    })
+    // reset visited views and cached views
+    await dispatch('tagsView/delAllViews', null, { root: true })
   }
 }
 

@@ -48,12 +48,19 @@ export const constantRoutes = [
   {
     path: '/documentation',
     component: 'layout/Layout',
+    meta: { title: '大鹅会议文档', icon: 'documentation' },
     children: [
       {
-        path: 'index',
-        component: 'views/documentation/index',
-        name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
+        path: 'https://github.com/Mutantcat-Working-Group/GooseMeeting/blob/master/README.md',
+        meta: { title: '中文文档', icon: 'documentation' }
+      },
+      {
+        path: 'https://github.com/Mutantcat-Working-Group/GooseMeeting/blob/master/README.en.md',
+        meta: { title: 'English Docs', icon: 'documentation' }
+      },
+      {
+        path: 'https://github.com/Mutantcat-Working-Group/GooseMeeting/blob/master/LICENSE',
+        meta: { title: 'MIT License', icon: 'documentation' }
       }
     ]
   },
@@ -515,7 +522,7 @@ export const asyncRoutes = [
     component: 'layout/Layout',
     children: [
       {
-        path: 'https://github.com/PanJiaChen/vue-element-admin',
+        path: 'https://github.com/Mutantcat-Working-Group/GooseMeeting',
         meta: { title: 'External Link', icon: 'link' }
       }
     ]

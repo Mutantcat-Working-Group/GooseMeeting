@@ -5,7 +5,7 @@
     </div>
     <div style="position:relative;">
       <pan-thumb :image="avatar" class="panThumb" />
-      <mallki class-name="mallki-text" text="vue-element-admin" />
+      <mallki class-name="mallki-text" text="大鹅会议" />
       <div style="padding-top:35px;" class="progress-item">
         <span>Vue</span>
         <el-progress :percentage="70" />
@@ -101,7 +101,7 @@ export default {
     background-color: #fff;
     margin: auto;
     box-shadow: none!important;
-    /deep/ .pan-info {
+    ::v-deep .pan-info {
       box-shadow: none!important;
     }
   }

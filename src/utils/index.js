@@ -9,7 +9,7 @@
  * @returns {string | null}
  */
 export function parseTime(time, cFormat) {
-  if (arguments.length === 0) {
+  if (time == null || time === '' || !['object', 'string', 'number'].includes(typeof time)) {
     return null
   }
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
@@ -25,6 +25,7 @@ export function parseTime(time, cFormat) {
     }
     date = new Date(time)
   }
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return null
   const formatObj = {
     y: date.getFullYear(),
     m: date.getMonth() + 1,

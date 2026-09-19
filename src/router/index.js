@@ -123,7 +123,7 @@ export const asyncRoutes = [
     component: Layout,
     children: [
       {
-        path: 'https://github.com/nnn149/MeetingWeb',
+        path: 'https://github.com/Mutantcat-Working-Group/GooseMeeting',
         meta: { title: '项目主页', icon: 'link' }
       }
     ]

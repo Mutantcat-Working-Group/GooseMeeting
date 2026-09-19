@@ -34,4 +34,15 @@ describe('Utils:parseTime', () => {
   it('null', () => {
     expect(parseTime(null)).toBeNull()
   })
+
+  it('rejects missing and invalid dates', () => {
+    for (const value of [undefined, '', 'invalid', new Date(NaN), {}, false]) {
+      expect(parseTime(value)).toBeNull()
+    }
+  })
+
+  it('preserves the zero timestamp', () => {
+    expect(parseTime(0)).toBe(parseTime(new Date(0)))
+    expect(parseTime(0)).not.toBeNull()
+  })
 })

@@ -2,16 +2,11 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
-/* ---------添加以下2句，引入https和fs---------*/
-const https = require('https')
-const fs = require('fs')
-/* ---------添加以上2句，引入https和fs---------*/
-
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Element Admin' // page title
+const name = defaultSettings.title || '大鹅会议' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -41,14 +36,8 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    disableHostCheck: true,
-    /* ---------添加https配置---------*/
-    host: '192.168.2.200',
-    https: {
-      key: fs.readFileSync(path.join(__dirname, './build/cert/privatekey.pem')),
-      cert: fs.readFileSync(path.join(__dirname, './build/cert/certificate.pem'))
-    }
-    /* ---------添加https配置---------*/
+    host: process.env.HOST || 'localhost',
+    https: process.env.HTTPS === 'true'
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

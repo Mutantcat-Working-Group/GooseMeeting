@@ -61,9 +61,11 @@ service.interceptors.response.use(
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
+          return store.dispatch('user/resetToken').then(() => {
             location.reload()
           })
+        }).catch(() => {
+          // Cancelling the prompt keeps the current page open.
         })
       }
       return Promise.reject(new Error(res.message || 'Error'))

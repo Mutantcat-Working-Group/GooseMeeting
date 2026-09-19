@@ -9,7 +9,7 @@
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.nickname"
+        v-model="listQuery.username"
         placeholder="用户名"
         style="width: 100px;"
         class="filter-item"
@@ -174,7 +174,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="密码" prop="password">
-              <el-input v-model="temp.password" />
+              <el-input v-model="temp.password" type="password" autocomplete="new-password" />
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -229,7 +229,7 @@ export default {
   },
   data() {
     return {
-      list: null,
+      list: [],
       total: 0,
       listLoading: true,
       multipleSelection: [],
@@ -413,9 +413,12 @@ export default {
     // 获取列表
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      return fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = Number(response.data.total)
+      }).catch(() => {
+        // The request interceptor reports the API error.
+      }).finally(() => {
         this.listLoading = false
       })
     },
@@ -480,21 +483,24 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-          import('@/vendor/Export2Excel').then(excel => {
-            const tHeader = ['id', '姓名', '用户名', '邮箱', '角色', '备注', '更新日期', '添加日期']
-            const filterVal = ['id', 'nickname', 'username', 'email', 'roleTitle', 'remark', 'updateTime', 'insertTime']
-            const data = this.formatJson(filterVal, this.list)
-            excel.export_json_to_excel({
-              header: tHeader,
-              data,
-              filename: 'userList'
-            })
-            this.downloadLoading = false
-          })
+      return import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['id', '姓名', '用户名', '邮箱', '角色', '备注', '更新日期', '添加日期']
+        const filterVal = ['id', 'nickname', 'username', 'email', 'roleTitle', 'remark', 'updateTime', 'insertTime']
+        const data = this.formatJson(filterVal, this.list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'userList'
+        })
+      }).catch(() => {
+        this.$message.error('导出失败，请重试')
+      }).finally(() => {
+        this.downloadLoading = false
+      })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'updateTime') {
+      return (jsonData || []).map(v => filterVal.map(j => {
+        if (j === 'updateTime' || j === 'insertTime') {
           return parseTime(v[j])
         } else {
           return v[j]
