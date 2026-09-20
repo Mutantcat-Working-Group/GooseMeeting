@@ -1,9 +1,10 @@
 const fs = require('node:fs')
 const path = require('node:path')
+const { execFileSync } = require('node:child_process')
 const { version } = require('../package.json')
 
 const [target, platform, extension] = process.argv.slice(2)
-if (!target || !/^(windows-x64|macos-x64|macos-arm64|linux-x64)$/.test(platform) || !['exe', 'dmg', 'AppImage'].includes(extension)) {
+if (!target || !/^(windows-x64|macos-x64|macos-arm64|linux-x64|linux-arm64)$/.test(platform) || !['exe', 'dmg', 'AppImage'].includes(extension)) {
   throw new Error('Expected target, platform and installer extension')
 }
 function walk(dir) {
@@ -20,4 +21,17 @@ fs.mkdirSync('release-artifacts', { recursive: true })
 const destination = `release-artifacts/goosemeeting_${version}_${platform}.${extension}`
 fs.copyFileSync(installers[0], destination)
 if (extension === 'AppImage') fs.chmodSync(destination, 0o755)
+
+const stageRoot = path.join('release-artifacts', `staging-${platform}`)
+const stageApp = path.join(stageRoot, `goosemeeting-${version}-${platform}`)
+fs.mkdirSync(stageApp, { recursive: true })
+if (platform.startsWith('macos-')) {
+  fs.cpSync(path.join(root, 'macos', 'GooseMeeting.app'), path.join(stageApp, 'GooseMeeting.app'), { recursive: true })
+} else {
+  fs.copyFileSync(installers[0], path.join(stageApp, path.basename(installers[0])))
+}
+const archive = `release-artifacts/goosemeeting_${version}_${platform}.tar.gz`
+execFileSync('tar', ['-czf', archive, '-C', stageRoot, '.'])
+fs.rmSync(stageRoot, { recursive: true, force: true })
 console.log(destination)
+console.log(archive)

@@ -3,7 +3,18 @@ const path = require('node:path')
 const crypto = require('node:crypto')
 const { version } = require('../package.json')
 const root = 'release-artifacts'
-const expected = ['windows-x64.exe', 'macos-x64.dmg', 'macos-arm64.dmg', 'linux-x64.AppImage']
+const expected = [
+  'windows-x64.exe',
+  'windows-x64.tar.gz',
+  'macos-x64.dmg',
+  'macos-x64.tar.gz',
+  'macos-arm64.dmg',
+  'macos-arm64.tar.gz',
+  'linux-x64.AppImage',
+  'linux-x64.tar.gz',
+  'linux-arm64.AppImage',
+  'linux-arm64.tar.gz',
+]
   .map(suffix => `goosemeeting_${version}_${suffix}`).sort()
 const actual = fs.readdirSync(root).filter(file => file !== 'SHA256SUMS.txt').sort()
 if (JSON.stringify(actual) !== JSON.stringify(expected)) throw new Error(`Incomplete release: ${actual}`)
