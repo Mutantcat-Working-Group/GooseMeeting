@@ -1,32 +1,35 @@
-# 大鹅会议 (goosemeeting)
-
-基于 WebRTC 的开源视频会议前端，支持音视频通话、屏幕共享、会议聊天和成员管理。
+<div align="center">
+<img src="./logo.png" width="100" alt="大鹅会议 Logo" />
+<h2>大鹅会议</h2>
+</div>
 
 **简体中文** | [English](README.en.md)
 
 [项目仓库](https://github.com/Mutantcat-Working-Group/GooseMeeting) · [问题反馈](https://github.com/Mutantcat-Working-Group/GooseMeeting/issues) · [MIT 协议](LICENSE)
 
-## 项目状态
+### 一、功能简述
+
+大鹅会议（goosemeeting）是一个基于 WebRTC 的**开源视频会议客户端**，提供 Vue 网页版和 Tauri 2 桌面版，核心功能：
+
+- **会议房间**：创建或加入带密码的会议房间。
+- **音视频通话**：摄像头与麦克风通话、屏幕共享和视频源切换。
+- **视频预览**：成员视频预览及大画面查看。
+- **会议聊天**：会议文字聊天和通知消息。
+- **房主管理**：禁言、静音、关闭视频和移除成员的管理入口。
+- **后台管理**：用户管理、字典管理及表格导出。
+
+音视频通过 WebRTC 点对点传输，WebSocket 用于会议信令和聊天。当前采用多人点对点连接，参与人数增加时，每位客户端的连接数、上行带宽和 CPU 消耗都会增加。
+
+#### 项目信息
 
 - 产品名称：**大鹅会议**；英文名称：`goosemeeting`。
 - npm 包名：`org.mutantcat.goosemeeting`，不作为 API 路径前缀。
 - 当前版本：**1.0.20260919**。
 - 当前仓库提供 Vue 网页客户端和 Tauri 2 桌面客户端，后端需要独立部署，不包含 Java 包或 Maven 模块。
 
-> 当前项目仍需完成生产环境安全加固和多设备联调。请先阅读下方的[安全与限制](#安全与限制)，不要将前端管理按钮视为服务端权限保障。
+> 当前项目仍需完成生产环境安全加固和多设备联调。请先阅读下方的[安全与限制](#十安全与限制)，不要将前端管理按钮视为服务端权限保障。
 
-## 功能
-
-- 创建或加入带密码的会议房间。
-- 摄像头与麦克风通话、屏幕共享和视频源切换。
-- 成员视频预览及大画面查看。
-- 会议文字聊天和通知消息。
-- 房主管理入口：禁言、静音、关闭视频和移除成员。
-- 用户管理、字典管理及表格导出。
-
-音视频通过 WebRTC 点对点传输，WebSocket 用于会议信令和聊天。当前采用多人点对点连接，参与人数增加时，每位客户端的连接数、上行带宽和 CPU 消耗都会增加。
-
-## 桌面客户端下载
+### 二、客户端下载
 
 在 [GitHub Releases](https://github.com/Mutantcat-Working-Group/GooseMeeting/releases) 下载对应安装包，无需安装 Node.js 或 Rust。
 
@@ -43,7 +46,7 @@ macOS 应用和 DMG 均采用 **ad-hoc 签名**，不等于 Developer ID 签名�
 
 Linux 首次运行可能需要 `chmod +x goosemeeting_*_linux-x64.AppImage` 及 FUSE 2。无 FUSE 时可使用 `--appimage-extract` 后运行 `squashfs-root/AppRun`。系统 WebView、图形驱动、媒体编解码器和系统权限决定音视频与屏幕共享兼容性，不承诺所有发行版或 WebView 均支持屏幕共享。
 
-## 界面预览
+### 三、界面预览
 
 以下为仓库保留的历史截图，名称和界面细节可能与当前版本不同。
 
@@ -58,7 +61,7 @@ Linux 首次运行可能需要 `chmod +x goosemeeting_*_linux-x64.AppImage` 及 
 
 </details>
 
-## 技术栈
+### 四、技术栈
 
 | 模块 | 技术 |
 | --- | --- |
@@ -69,9 +72,9 @@ Linux 首次运行可能需要 `chmod +x goosemeeting_*_linux-x64.AppImage` 及 
 | 桌面 | Tauri 2、Rust、系统 WebView |
 | 质量检查 | ESLint、Jest、Vue Test Utils |
 
-## 快速开始
+### 五、快速上手
 
-### 环境要求
+#### 环境要求
 
 - 推荐使用已验证的 **Node.js 22** 和 npm。
 - 使用支持 WebRTC 的现代浏览器；屏幕共享能力因浏览器和操作系统而异。
@@ -79,7 +82,7 @@ Linux 首次运行可能需要 `chmod +x goosemeeting_*_linux-x64.AppImage` 及 
 
 项目已使用 Dart Sass 替代 Node Sass，无需安装 Node Sass 原生编译依赖，也无需启用 OpenSSL legacy provider。
 
-### 安装与配置
+#### 安装与配置
 
 ```sh
 git clone https://github.com/Mutantcat-Working-Group/GooseMeeting.git
@@ -105,14 +108,14 @@ npm run dev
 npm run dev -- --host 127.0.0.1 --port 8082
 ```
 
-### 后端连接要求
+#### 后端连接要求
 
 - 后端需允许前端来源的 CORS 请求及 `Authorization` 请求头。
 - `/WebrtcWs/url` 返回的 WebSocket 地址必须能被参与者的设备访问。
 - HTTPS 页面应连接 HTTPS API 和 WSS 信令服务，避免混合内容被浏览器拦截。
 - 环境变量在启动或构建时注入；修改后需重启开发服务或重新构建。`VUE_APP_*` 会进入前端产物，不可存放密钥。
 
-## 构建与部署
+### 六、构建与部署
 
 在 `.env.production.local` 中配置生产后端，例如：
 
@@ -128,7 +131,7 @@ npm run build:prod
 
 摄像头、麦克风和屏幕共享需要安全上下文。本机 `localhost` 可使用 HTTP，局域网 IP 或公网访问应使用 HTTPS。开发服务器支持通过 `HOST` 与 `HTTPS=true` 环境变量配置地址及 HTTPS，但开发证书仍需浏览器信任。
 
-## 开发与验证
+### 七、开发与验证
 
 | 命令 | 用途 |
 | --- | --- |
@@ -147,7 +150,7 @@ npm run build:prod
 
 staging 环境可使用 `.env.staging.local` 覆盖后端地址。单元测试覆盖部分会议信令、媒体生命周期、后台列表和登录状态的回归场景，但不能替代真实设备上的媒体权限、多人通话及跨网络连通性测试。
 
-## 自动发布
+### 八、自动发布
 
 `.github/workflows/ci.yml` 在 master 推送及 Pull Request 时执行版本检查、ESLint、单元测试和网页构建。`.github/workflows/release.yml` 在推送 `v*` 标签时运行四目标原生构建。全部成功后上传四份安装包和 SHA-256 校验清单，再发布 Release；构建失败不会发布不完整的新版本。
 
@@ -164,7 +167,7 @@ git push origin v1.0.20260919
 
 公开版本格式为 `主版本.次版本.YYYYMMDD`。Windows 数字资源字段每段上限为 65535，因此打包时映射为 `1.0.2026+919`（原生四段 `1.0.2026.919`）；界面、标签、Release 和下载文件名保留完整 `1.0.20260919`。这次从上游模板的 `4.2.1` 改为产品首发版本，不代表模板依赖版本升级。
 
-## 目录结构
+### 九、项目结构
 
 ```text
 src/
@@ -185,23 +188,42 @@ src-tauri/             桌面入口、打包配置、权限及图标
 scripts/               桌面构建与发布校验脚本
 .github/workflows/     CI 与跨平台 Release
 docs/                  发布说明和实施清单
+logo.png               README 与客户端图标源文件
 vue.config.js          前端构建与开发服务配置
 ```
 
-## 安全与限制
+图标统一使用根目录的 `logo.png`：README 直接引用原图，侧栏使用由它生成的 `src/assets/logo.png` 小尺寸图片，网页 favicon 和 `src-tauri/icons/` 中的桌面图标也由它生成。更换源图后需同步重新生成图标并构建安装包；已发布的安装包不会随源码更新自动改变。
+
+### 十、安全与限制
 
 - **服务端授权**：审查的公开上游后端会转发管理信令，但未校验房主管理权限。部署前必须在服务端验证身份、房间归属和管理权限，不能信任客户端提供的管理员标记。当前前端仓库无法独立修复该问题。
 - **跨网通话**：当前只有 STUN 配置，没有 TURN 中继；严格 NAT、企业防火墙等网络可能无法建立通话。生产部署应配置 TURN 并进行跨网络测试。
 - **依赖维护**：Vue 2 及多项依赖已较旧。构建兼容修复不代表完成安全升级，公网部署前需进行依赖审计和升级评估。
 - **规模与兼容性**：点对点拓扑不承诺任意人数可用；浏览器权限、设备和系统差异也会影响媒体功能。
 
-## 贡献
+### 十一、开发进度
+
+- [x] 大鹅会议命名、`org.mutantcat.goosemeeting` 包名和双语文档。
+- [x] Vue 网页客户端与 Tauri 2 桌面客户端。
+- [x] Windows NSIS、macOS 双架构 DMG 和 Linux AppImage 自动构建发布。
+- [x] 版本校验、单元测试和网页构建 CI。
+- [ ] 服务端权限加固、TURN 中继部署及依赖安全升级。
+- [ ] 真实设备上的多人会议、媒体权限和跨网络兼容性验证。
+
+实施与验证记录见 [桌面发布说明](docs/desktop-release-plan.md)。
+
+#### 参与贡献
 
 欢迎通过 [Issues](https://github.com/Mutantcat-Working-Group/GooseMeeting/issues) 报告问题或提交 Pull Request。复现信息请包含操作系统、浏览器、Node.js 版本、操作步骤及脱敏日志。不要在公开反馈中提交令牌、房间密码或其他敏感信息。
 
 提交代码前请运行代码检查、单元测试和生产构建。涉及 WebRTC 的修改应补充对应回归测试，并说明实际验证的平台与网络环境。
 
-## 来源与协议
+### 十二、相关项目与协议
+
+- [MeetingWeb](https://github.com/nnn149/MeetingWeb)：原始会议前端。
+- [MeetingServer](https://github.com/nnn149/MeetingServer)：兼容后端参考，部署前需审查权限实现。
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)：管理界面基础。
+- [Tauri](https://github.com/tauri-apps/tauri)：跨平台桌面框架。
 
 本项目基于 [MeetingWeb](https://github.com/nnn149/MeetingWeb)，管理界面继承自 [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)。感谢原项目作者及贡献者。
 

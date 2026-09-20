@@ -1,32 +1,35 @@
-# goosemeeting (大鹅会议)
-
-An open-source WebRTC video meeting frontend with audio and video calls, screen sharing, meeting chat, and participant management.
+<div align="center">
+<img src="./logo.png" width="100" alt="goosemeeting logo" />
+<h2>goosemeeting</h2>
+</div>
 
 [简体中文](README.md) | **English**
 
 [Repository](https://github.com/Mutantcat-Working-Group/GooseMeeting) · [Issues](https://github.com/Mutantcat-Working-Group/GooseMeeting/issues) · [MIT License](LICENSE)
 
-## Project Status
+### 1. Overview
+
+goosemeeting (大鹅会议) is an **open-source WebRTC video meeting client**, available as a Vue web application and a Tauri 2 desktop application. Core features:
+
+- **Meeting rooms:** Create or join password-protected rooms.
+- **Audio and video:** Camera and microphone calls, screen sharing, and media source switching.
+- **Video previews:** Participant previews and an enlarged video view.
+- **Meeting chat:** Text chat and notification messages.
+- **Host controls:** Management controls for chat restrictions, microphone muting, video disabling, and participant removal.
+- **Administration:** User management, dictionary management, and spreadsheet export.
+
+WebRTC carries audio and video over peer-to-peer connections. WebSocket carries signaling and chat messages. The current multi-party peer-to-peer topology increases each client's connection count, upload bandwidth, and CPU usage as more participants join.
+
+#### Project Information
 
 - Product name: **大鹅会议** in Chinese and `goosemeeting` in English.
 - npm package name: `org.mutantcat.goosemeeting`. This is not an API path prefix.
 - Current version: **1.0.20260919**.
 - This repository provides a Vue web client and a Tauri 2 desktop client. The backend must be deployed separately; no Java packages or Maven modules are included.
 
-> Production security hardening and multi-device integration testing are still required. Read [Security and Limitations](#security-and-limitations) before deploying. Frontend management controls are not a substitute for server-side authorization.
+> Production security hardening and multi-device integration testing are still required. Read [Security and Limitations](#10-security-and-limitations) before deploying. Frontend management controls are not a substitute for server-side authorization.
 
-## Features
-
-- Create or join password-protected meeting rooms.
-- Camera and microphone calls, screen sharing, and media source switching.
-- Participant video previews and an enlarged video view.
-- Meeting text chat and notification messages.
-- Host controls for chat restrictions, microphone muting, video disabling, and participant removal.
-- User management, dictionary management, and spreadsheet export.
-
-WebRTC carries audio and video over peer-to-peer connections. WebSocket carries signaling and chat messages. The current multi-party peer-to-peer topology increases each client's connection count, upload bandwidth, and CPU usage as more participants join.
-
-## Desktop Downloads
+### 2. Client Downloads
 
 Download installers from [GitHub Releases](https://github.com/Mutantcat-Working-Group/GooseMeeting/releases). Node.js and Rust are not required to run them.
 
@@ -43,7 +46,7 @@ Both the macOS application and DMG are **ad-hoc signed**, not Developer ID signe
 
 Linux may need `chmod +x goosemeeting_*_linux-x64.AppImage` and FUSE 2. Without FUSE, use `--appimage-extract` and run `squashfs-root/AppRun`. Media and screen sharing depend on the system WebView, graphics drivers, codecs and OS permissions; not every distribution or WebView supports screen sharing.
 
-## Screenshots
+### 3. Screenshots
 
 These are historical screenshots retained in the repository. Names and interface details may differ from the current version.
 
@@ -58,7 +61,7 @@ These are historical screenshots retained in the repository. Names and interface
 
 </details>
 
-## Technology Stack
+### 4. Technology Stack
 
 | Area | Technology |
 | --- | --- |
@@ -69,9 +72,9 @@ These are historical screenshots retained in the repository. Names and interface
 | Desktop | Tauri 2, Rust, system WebView |
 | Quality checks | ESLint, Jest, Vue Test Utils |
 
-## Quick Start
+### 5. Quick Start
 
-### Requirements
+#### Requirements
 
 - **Node.js 22**, which has been tested with this project, and npm.
 - A modern browser with WebRTC support. Screen sharing capabilities vary by browser and operating system.
@@ -79,7 +82,7 @@ These are historical screenshots retained in the repository. Names and interface
 
 The project uses Dart Sass instead of Node Sass. Native Node Sass build dependencies and the OpenSSL legacy provider are not required.
 
-### Installation and Configuration
+#### Installation and Configuration
 
 ```sh
 git clone https://github.com/Mutantcat-Working-Group/GooseMeeting.git
@@ -105,14 +108,14 @@ The default URL is [http://localhost:8081](http://localhost:8081). Use the actua
 npm run dev -- --host 127.0.0.1 --port 8082
 ```
 
-### Backend Connectivity
+#### Backend Connectivity
 
 - The backend must allow CORS requests from the frontend origin, including the `Authorization` header.
 - The WebSocket URL returned by `/WebrtcWs/url` must be reachable from participants' devices.
 - HTTPS pages should connect to HTTPS APIs and WSS signaling services to avoid mixed-content blocking.
 - Environment variables are injected at startup or build time. Restart the development server or rebuild after changing them. `VUE_APP_*` variables are included in frontend assets and must not contain secrets.
 
-## Build and Deployment
+### 6. Build and Deployment
 
 Configure the production backend in `.env.production.local`, for example:
 
@@ -128,7 +131,7 @@ Deploy the generated `dist/` directory to a static server. The current `publicPa
 
 Camera, microphone, and screen capture require a secure context. HTTP is supported on local `localhost`, while LAN IP and public access should use HTTPS. The development server accepts `HOST` and `HTTPS=true` environment variables, but its development certificate still needs to be trusted by the browser.
 
-## Development and Verification
+### 7. Development and Verification
 
 | Command | Purpose |
 | --- | --- |
@@ -147,7 +150,7 @@ Desktop development requires stable Rust and the [Tauri prerequisites](https://v
 
 Use `.env.staging.local` to override the staging backend URL. Unit tests cover selected regressions in signaling, media lifecycle, admin lists, and authentication state. They do not replace real-device testing of media permissions, multi-party calls, or connectivity across networks.
 
-## Automated Releases
+### 8. Automated Releases
 
 `.github/workflows/ci.yml` runs version validation, ESLint, unit tests and a web build on master pushes and pull requests. `.github/workflows/release.yml` builds four native targets when a `v*` tag is pushed. Only after every build succeeds are all four installers and SHA-256 checksums uploaded and the Release published. A failed build does not publish an incomplete new release.
 
@@ -164,7 +167,7 @@ Before tagging, dispatch the same workflow with `tag` set to `master` and `prefl
 
 Public versions use `major.minor.YYYYMMDD`. Windows numeric resource fields are limited to 65535 per part, so packaging maps the version to `1.0.2026+919` (native four-part `1.0.2026.919`). The UI, tag, release and download filenames retain `1.0.20260919`. Moving from the upstream template's `4.2.1` establishes the product's first release version; it is not a dependency upgrade.
 
-## Project Structure
+### 9. Project Structure
 
 ```text
 src/
@@ -185,23 +188,42 @@ src-tauri/             Desktop entry, bundle configuration, permissions and icon
 scripts/               Desktop build and release validation scripts
 .github/workflows/     CI and cross-platform releases
 docs/                  Release notes and implementation checklist
+logo.png               Source image for README and client icons
 vue.config.js          Frontend build and development server configuration
 ```
 
-## Security and Limitations
+The root `logo.png` is the shared icon source: the READMEs reference it directly, while the sidebar uses a smaller generated image at `src/assets/logo.png`. The web favicon and desktop icons in `src-tauri/icons/` are also generated from it. Regenerate the icons and rebuild installers after replacing the source image; previously published installers do not change with source updates.
+
+### 10. Security and Limitations
 
 - **Server-side authorization:** The reviewed public upstream backend forwards management signals without verifying host privileges. Before deployment, enforce identity, room membership, and management permissions on the server. Do not trust client-provided administrator flags. This frontend repository cannot independently fix that issue.
 - **Cross-network calls:** Only STUN is configured; no TURN relay is provided. Restrictive NATs and corporate firewalls may prevent calls from connecting. Configure TURN and test across networks before production use.
 - **Dependency maintenance:** Vue 2 and several dependencies are old. Build compatibility fixes do not constitute security upgrades. Audit dependencies and assess upgrades before public deployment.
 - **Scale and compatibility:** The peer-to-peer topology does not guarantee support for arbitrary participant counts. Browser permissions, devices, and operating systems also affect media functionality.
 
-## Contributing
+### 11. Development Progress
+
+- [x] goosemeeting branding, the `org.mutantcat.goosemeeting` package name, and bilingual documentation.
+- [x] Vue web client and Tauri 2 desktop client.
+- [x] Automated Windows NSIS, dual-architecture macOS DMG, and Linux AppImage builds and releases.
+- [x] Version validation, unit tests, and web build CI.
+- [ ] Server-side authorization hardening, TURN relay deployment, and dependency security upgrades.
+- [ ] Real-device verification of multi-party meetings, media permissions, and cross-network compatibility.
+
+See the [desktop release notes](docs/desktop-release-plan.md) (Chinese) for implementation and verification records.
+
+#### Contributing
 
 Report bugs through [Issues](https://github.com/Mutantcat-Working-Group/GooseMeeting/issues) or submit a pull request. Include your operating system, browser, Node.js version, reproduction steps, and sanitized logs. Never include tokens, room passwords, or other sensitive information in public reports.
 
 Run linting, unit tests, and a production build before submitting code. WebRTC changes should include relevant regression tests and describe the platforms and network conditions actually tested.
 
-## Attribution and License
+### 12. Related Projects and License
+
+- [MeetingWeb](https://github.com/nnn149/MeetingWeb): Original meeting frontend.
+- [MeetingServer](https://github.com/nnn149/MeetingServer): Compatible backend reference; review authorization before deployment.
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin): Admin interface foundation.
+- [Tauri](https://github.com/tauri-apps/tauri): Cross-platform desktop framework.
 
 This project is based on [MeetingWeb](https://github.com/nnn149/MeetingWeb), with an admin interface inherited from [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin). Thanks to the original authors and contributors.
 
