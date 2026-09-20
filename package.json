@@ -1,6 +1,6 @@
 {
   "name": "org.mutantcat.goosemeeting",
-  "version": "1.0.20260919",
+  "version": "1.0.20260920",
   "description": "大鹅会议 (goosemeeting) - 基于 WebRTC 的视频会议、语音通话与屏幕共享应用",
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",

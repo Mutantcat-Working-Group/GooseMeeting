@@ -1,6 +1,6 @@
 [package]
 name = "goosemeeting"
-version = "1.0.20260919"
+version = "1.0.20260920"
 description = "GooseMeeting desktop video conferencing client"
 authors = ["GooseMeeting contributors"]
 license = "MIT"

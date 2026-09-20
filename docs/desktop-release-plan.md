@@ -1,6 +1,6 @@
 # Desktop Release Plan
 
-Approved scope: Tauri 2 desktop client, version 1.0.20260919, tag-triggered
+Approved scope: Tauri 2 desktop client, version 1.0.20260920, tag-triggered
 GitHub releases with Windows x64 NSIS, macOS Intel and Apple Silicon DMGs,
 and Linux x64 AppImage. Bundle frontend assets and retain the separate backend.
 
@@ -30,7 +30,7 @@ and Linux x64 AppImage. Bundle frontend assets and retain the separate backend.
 
 The public version is read from package.json. Windows native numeric fields
 cannot contain an eight-digit patch. For Windows packaging, map YYYYMMDD to
-YYYY plus MMDD build metadata (1.0.2026+919); retain the public version in the
+YYYY plus MMDD build metadata (1.0.2026+920 for 1.0.20260920); retain the public version in the
 application UI, Git tag, release title and downloadable artifact filenames.
 Reject invalid dates and mismatched tags before uploading any artifacts.
 

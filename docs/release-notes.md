@@ -1,4 +1,16 @@
-# 大鹅会议 / GooseMeeting
+# 大鹅会议 / GooseMeeting 1.0.20260920
+
+## 本次更新 / What's New
+
+- 应用图标统一使用新的 `logo.png`，覆盖 Windows、macOS、Linux 桌面应用及网页图标。
+- 中英文 README 按统一的编号章节格式重新整理，补充开发进度和图标说明。
+- 产品版本升级至 `1.0.20260920`；Windows 原生数字版本为 `1.0.2026.920`。
+
+- Use the new `logo.png` for Windows, macOS, Linux application icons and web branding.
+- Restructure both READMEs with numbered sections, development status and icon documentation.
+- Bump the product version to `1.0.20260920`; the Windows native numeric version is `1.0.2026.920`.
+
+## 安装说明 / Installation
 
 下载与系统架构匹配的安装包。无需安装 Node.js 或 Rust；会议后端需独立部署，首次启动请在登录页输入服务器地址。
 

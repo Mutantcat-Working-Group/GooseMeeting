@@ -24,7 +24,7 @@ WebRTC carries audio and video over peer-to-peer connections. WebSocket carries 
 
 - Product name: **大鹅会议** in Chinese and `goosemeeting` in English.
 - npm package name: `org.mutantcat.goosemeeting`. This is not an API path prefix.
-- Current version: **1.0.20260919**.
+- Current version: **1.0.20260920**.
 - This repository provides a Vue web client and a Tauri 2 desktop client. The backend must be deployed separately; no Java packages or Maven modules are included.
 
 > Production security hardening and multi-device integration testing are still required. Read [Security and Limitations](#10-security-and-limitations) before deploying. Frontend management controls are not a substitute for server-side authorization.
@@ -157,15 +157,15 @@ Use `.env.staging.local` to override the staging backend URL. Unit tests cover s
 Update the application version in `package.json`, `package-lock.json`, `src-tauri/Cargo.toml` and `src-tauri/Cargo.lock`, commit, then push a matching version tag:
 
 ```sh
-git tag v1.0.20260919
-git push origin v1.0.20260919
+git tag v1.0.20260920
+git push origin v1.0.20260920
 ```
 
 The Desktop Release workflow can also be dispatched manually with an existing version tag. It uses the built-in `GITHUB_TOKEN`; the publishing job needs `contents: write`. No Apple certificate or paid signing secret is needed for the default build.
 
 Before tagging, dispatch the same workflow with `tag` set to `master` and `preflight` enabled. Preflight builds and verifies all native installers but only saves Actions artifacts, without creating a Release. The Linux client requests camera and microphone access through a native dialog and does not automatically grant denied requests.
 
-Public versions use `major.minor.YYYYMMDD`. Windows numeric resource fields are limited to 65535 per part, so packaging maps the version to `1.0.2026+919` (native four-part `1.0.2026.919`). The UI, tag, release and download filenames retain `1.0.20260919`. Moving from the upstream template's `4.2.1` establishes the product's first release version; it is not a dependency upgrade.
+Public versions use `major.minor.YYYYMMDD`. Windows numeric resource fields are limited to 65535 per part, so packaging maps the version to `1.0.2026+920` (native four-part `1.0.2026.920`). The UI, tag, release and download filenames retain `1.0.20260920`. Product versions are independent of the upstream template's `4.2.1`; they do not indicate a dependency upgrade.
 
 ### 9. Project Structure
 
