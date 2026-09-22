@@ -7,7 +7,7 @@
 
 [项目仓库](https://github.com/Mutantcat-Working-Group/GooseMeeting) · [问题反馈](https://github.com/Mutantcat-Working-Group/GooseMeeting/issues) · [MIT 协议](LICENSE)
 
-### 一、功能简述
+### 一、产品概述
 - 大鹅会议（goosemeeting）是一个基于 WebRTC 的**开源视频会议客户端**，提供 Vue 网页版和 Tauri 2 桌面版。
 - 支持创建或加入带密码的会议房间，进行摄像头、麦克风通话、屏幕共享和视频源切换。
 - 支持成员视频预览及大画面查看、会议文字聊天和通知消息。
@@ -17,21 +17,11 @@
 - 产品中文名为**大鹅会议**，英文名为 `goosemeeting`；npm 包名为 `org.mutantcat.goosemeeting`，不作为 API 路径前缀。
 - 当前版本：**1.0.20260920**。本仓库提供 Vue 网页客户端和 Tauri 2 桌面客户端，后端需要独立部署，不包含 Java 包或 Maven 模块。
 
-> 当前项目仍需完成生产环境安全加固和多设备联调。请先阅读[安全与限制](#十安全与限制)，不要将前端管理按钮视为服务端权限保障。
+核心价值：不依赖第三方会议服务，网页、Windows、macOS、Linux 四端同一套界面与信令逻辑，后端自部署后即可开会。
 
-### 二、客户端下载
-1. 从 [GitHub Releases](https://github.com/Mutantcat-Working-Group/GooseMeeting/releases) 下载对应安装包，无需安装 Node.js 或 Rust。
-2. 各平台安装包：
-   - Windows 10/11 x64：`windows-x64.exe`，NSIS 安装程序，包含 WebView2 离线运行库安装程序。
-   - macOS 12+ Intel：`macos-x64.dmg`，打开后拖入 Applications。
-   - macOS 12+ Apple Silicon：`macos-arm64.dmg`，打开后拖入 Applications。
-   - Linux x64：`linux-x64.AppImage`，赋予可执行权限后启动，建议 Ubuntu 22.04 或更新的兼容发行版。
-3. 首次启动在登录页填写会议服务器的 HTTP(S) 地址；地址保存在本机，修改地址会清除登录令牌。桌面版没有内置公共会议服务。
-4. 服务器必须允许桌面来源的 CORS 请求：macOS/Linux 为 `tauri://localhost`，Windows 为 `http://tauri.localhost`，开发模式为 `http://127.0.0.1:1420`。生产服务请使用可信 HTTPS/WSS。
-5. macOS 应用和 DMG 均采用 ad-hoc 签名，不等于 Developer ID 签名或 Apple 公证，Gatekeeper 仍可能要求手动允许打开。Windows 未作商业代码签名，可能出现 SmartScreen 提示。请核对发布来源与 `SHA256SUMS.txt`，不要全局关闭系统安全检查。
-6. Linux 首次运行可能需要 `chmod +x goosemeeting_*_linux-x64.AppImage` 及 FUSE 2。无 FUSE 时可使用 `--appimage-extract` 后运行 `squashfs-root/AppRun`。系统 WebView、图形驱动、媒体编解码器和系统权限决定音视频与屏幕共享兼容性，不承诺所有发行版均支持屏幕共享。
+> 当前项目仍需完成生产环境安全加固和多设备联调。请先阅读[七、安全与限制](#七安全与限制)，不要将前端管理按钮视为服务端权限保障。
 
-### 三、界面预览
+### 二、软件界面
 以下为仓库保留的历史截图，名称和界面细节可能与当前版本不同。
 
 ![历史界面预览 1](image/1.jpg)
@@ -45,7 +35,22 @@
 
 </details>
 
-### 四、技术栈
+### 三、功能说明
+
+#### 会议能力
+
+- 创建或加入带密码的会议房间
+- 摄像头、麦克风通话，屏幕共享，视频源切换
+- 成员视频预览及大画面查看
+- 会议文字聊天和通知消息
+- 房主管理：禁言、静音、关闭视频、移除成员
+
+#### 后台管理
+
+- 用户管理、字典管理及表格导出
+
+#### 技术栈
+
 - 页面与组件：Vue 2、Element UI
 - 路由与状态：Vue Router 3、Vuex 3
 - 通信：Axios、WebSocket、WebRTC、webrtc-adapter
@@ -53,7 +58,38 @@
 - 桌面：Tauri 2、Rust、系统 WebView
 - 质量检查：ESLint、Jest、Vue Test Utils
 
+### 四、安装与下载
+
+#### 桌面客户端
+
+1. 从 [GitHub Releases](https://github.com/Mutantcat-Working-Group/GooseMeeting/releases) 下载对应安装包，无需安装 Node.js 或 Rust。
+2. 各平台安装包：
+   - Windows 10/11 x64：`windows-x64.exe`，NSIS 安装程序，包含 WebView2 离线运行库安装程序。
+   - macOS 12+ Intel：`macos-x64.dmg`，打开后拖入 Applications。
+   - macOS 12+ Apple Silicon：`macos-arm64.dmg`，打开后拖入 Applications。
+   - Linux x64：`linux-x64.AppImage`，赋予可执行权限后启动，建议 Ubuntu 22.04 或更新的兼容发行版。
+3. 首次启动在登录页填写会议服务器的 HTTP(S) 地址；地址保存在本机，修改地址会清除登录令牌。桌面版没有内置公共会议服务。
+4. 服务器必须允许桌面来源的 CORS 请求：macOS/Linux 为 `tauri://localhost`，Windows 为 `http://tauri.localhost`，开发模式为 `http://127.0.0.1:1420`。生产服务请使用可信 HTTPS/WSS。
+5. macOS 应用和 DMG 均采用 ad-hoc 签名，不等于 Developer ID 签名或 Apple 公证，Gatekeeper 仍可能要求手动允许打开。Windows 未作商业代码签名，可能出现 SmartScreen 提示。请核对发布来源与 `SHA256SUMS.txt`，不要全局关闭系统安全检查。
+6. Linux 首次运行可能需要 `chmod +x goosemeeting_*_linux-x64.AppImage` 及 FUSE 2。无 FUSE 时可使用 `--appimage-extract` 后运行 `squashfs-root/AppRun`。系统 WebView、图形驱动、媒体编解码器和系统权限决定音视频与屏幕共享兼容性，不承诺所有发行版均支持屏幕共享。
+
+公开版本格式为 `主版本.次版本.YYYYMMDD`。Windows 数字资源字段每段上限为 65535，因此打包时映射为 `1.0.2026+920`（原生四段 `1.0.2026.920`）；界面、标签、Release 和下载文件名保留完整 `1.0.20260920`。
+
+#### 自动发布
+
+推送 `v*` 版本标签即由 [`.github/workflows/release.yml`](.github/workflows/release.yml) 运行四目标原生构建，全部成功后上传四份安装包和 SHA-256 校验清单并发布 Release；构建失败不会发布不完整的新版本。手动触发同一工作流可用已存在的版本标签重试，勾选 `preflight` 只产出 Actions artifacts，不创建 Release。
+
+发布前同步修改 `package.json`、`package-lock.json`、`src-tauri/Cargo.toml` 和 `src-tauri/Cargo.lock` 中的应用版本，提交后推送版本标签：
+
+```sh
+git tag v1.0.20260920
+git push origin v1.0.20260920
+```
+
+工作流仅用仓库自带 `GITHUB_TOKEN`，发布任务需要 `contents: write`。构建默认无需 Apple 证书或付费签名密钥。
+
 ### 五、快速上手
+
 1. 环境要求
    - 推荐使用已验证的 Node.js 22 和 npm。
    - 使用支持 WebRTC 的现代浏览器；屏幕共享能力因浏览器和操作系统而异。
@@ -85,7 +121,8 @@
    - HTTPS 页面应连接 HTTPS API 和 WSS 信令服务，避免混合内容被浏览器拦截。
    - 环境变量在启动或构建时注入；修改后需重启开发服务或重新构建。`VUE_APP_*` 会进入前端产物，不可存放密钥。
 
-### 六、构建与部署
+#### 生产部署
+
 1. 在 `.env.production.local` 中配置生产后端，例如：
    ```dotenv
    VUE_APP_BASE_API=https://api.example.com
@@ -97,7 +134,8 @@
 3. 将生成的 `dist/` 部署到静态服务器。当前 `publicPath` 为 `/`，默认部署在站点根路径；部署到子路径时需同步调整 `vue.config.js`。生产环境应配置可信 HTTPS 证书，开发服务器不用于生产托管。
 4. 摄像头、麦克风和屏幕共享需要安全上下文。本机 `localhost` 可使用 HTTP，局域网 IP 或公网访问应使用 HTTPS。开发服务器支持通过 `HOST` 与 `HTTPS=true` 环境变量配置地址及 HTTPS，但开发证书仍需浏览器信任。
 
-### 七、开发与验证
+### 六、开发与验证
+
 1. 常用命令
    - `npm run dev`：启动网页开发服务
    - `npm run lint`：检查 JavaScript 和 Vue 代码
@@ -112,17 +150,25 @@
 2. 桌面开发需要 Rust 稳定版及 Tauri 系统依赖。macOS 需要 Xcode 命令行工具，Windows 需要 MSVC C++ 工具，Linux 需要 WebKitGTK 4.1 和 GStreamer。桌面前端资源会内嵌打包；开发端口为 1420。`package-lock.json` 和 `src-tauri/Cargo.lock` 已纳入版本控制。
 3. staging 环境可使用 `.env.staging.local` 覆盖后端地址。单元测试覆盖部分会议信令、媒体生命周期、后台列表和登录状态的回归场景，但不能替代真实设备上的媒体权限、多人通话及跨网络连通性测试。
 
-### 八、自动发布
-1. `.github/workflows/ci.yml` 在 master 推送及 Pull Request 时执行版本检查、ESLint、单元测试和网页构建。
-2. `.github/workflows/release.yml` 在推送 `v*` 标签时运行四目标原生构建。全部成功后上传四份安装包和 SHA-256 校验清单并发布 Release；构建失败不会发布不完整的新版本。
-3. 发布前同步修改 `package.json`、`package-lock.json`、`src-tauri/Cargo.toml` 和 `src-tauri/Cargo.lock` 中的应用版本，提交后推送版本标签：
-   ```sh
-   git tag v1.0.20260920
-   git push origin v1.0.20260920
-   ```
-4. 也可通过 Actions 的 Desktop Release 工作流手动选择已经存在的版本标签重试。工作流仅用仓库自带 `GITHUB_TOKEN`，发布任务需要 `contents: write`。构建默认无需 Apple 证书或付费签名密钥。
-5. 打标签前可手动运行同一工作流，将 `tag` 填为 `master` 并勾选 `preflight`。预检执行全部原生构建和签名检查，只保存 Actions artifacts，不创建 Release。Linux 客户端使用原生弹窗请求摄像头和麦克风权限，拒绝后不会自动授权。
-6. 公开版本格式为 `主版本.次版本.YYYYMMDD`。Windows 数字资源字段每段上限为 65535，因此打包时映射为 `1.0.2026+920`（原生四段 `1.0.2026.920`）；界面、标签、Release 和下载文件名保留完整 `1.0.20260920`。产品版本独立于上游模板的 `4.2.1`，不代表模板依赖版本升级。
+### 七、安全与限制
+
+- 服务端授权：审查的公开上游后端会转发管理信令，但未校验房主管理权限。部署前必须在服务端验证身份、房间归属和管理权限，不能信任客户端提供的管理员标记。当前前端仓库无法独立修复该问题。
+- 跨网通话：当前只有 STUN 配置，没有 TURN 中继；严格 NAT、企业防火墙等网络可能无法建立通话。生产部署应配置 TURN 并进行跨网络测试。
+- 依赖维护：Vue 2 及多项依赖已较旧。构建兼容修复不代表完成安全升级，公网部署前需进行依赖审计和升级评估。
+- 规模与兼容性：点对点拓扑不承诺任意人数可用；浏览器权限、设备和系统差异也会影响媒体功能。
+
+### 八、开发进度
+
+- [x] 大鹅会议命名、`org.mutantcat.goosemeeting` 包名和双语文档。
+- [x] Vue 网页客户端与 Tauri 2 桌面客户端。
+- [x] Windows NSIS、macOS 双架构 DMG 和 Linux AppImage 自动构建发布。
+- [x] 版本校验、单元测试和网页构建 CI。
+- [ ] 服务端权限加固、TURN 中继部署及依赖安全升级。
+- [ ] 真实设备上的多人会议、媒体权限和跨网络兼容性验证。
+
+实施与验证记录见 [桌面发布说明](docs/desktop-release-plan.md)。
+
+参与贡献：欢迎通过 [Issues](https://github.com/Mutantcat-Working-Group/GooseMeeting/issues) 报告问题或提交 Pull Request。复现信息请包含操作系统、浏览器、Node.js 版本、操作步骤及脱敏日志；不要在公开反馈中提交令牌、房间密码或其他敏感信息。提交代码前请运行代码检查、单元测试和生产构建。涉及 WebRTC 的修改应补充对应回归测试，并说明实际验证的平台与网络环境。
 
 ### 九、项目结构
 ```text
@@ -149,29 +195,11 @@ vue.config.js          前端构建与开发服务配置
 ```
 图标统一使用根目录的 `logo.png`：README 直接引用原图，侧栏使用由它生成的 `src/assets/logo.png` 小尺寸图片，网页 favicon 和 `src-tauri/icons/` 中的桌面图标也由它生成。更换源图后需同步重新生成图标并构建安装包；已发布的安装包不会随源码更新自动改变。
 
-### 十、安全与限制
-- 服务端授权：审查的公开上游后端会转发管理信令，但未校验房主管理权限。部署前必须在服务端验证身份、房间归属和管理权限，不能信任客户端提供的管理员标记。当前前端仓库无法独立修复该问题。
-- 跨网通话：当前只有 STUN 配置，没有 TURN 中继；严格 NAT、企业防火墙等网络可能无法建立通话。生产部署应配置 TURN 并进行跨网络测试。
-- 依赖维护：Vue 2 及多项依赖已较旧。构建兼容修复不代表完成安全升级，公网部署前需进行依赖审计和升级评估。
-- 规模与兼容性：点对点拓扑不承诺任意人数可用；浏览器权限、设备和系统差异也会影响媒体功能。
-
-### 十一、开发进度
-- [x] 大鹅会议命名、`org.mutantcat.goosemeeting` 包名和双语文档。
-- [x] Vue 网页客户端与 Tauri 2 桌面客户端。
-- [x] Windows NSIS、macOS 双架构 DMG 和 Linux AppImage 自动构建发布。
-- [x] 版本校验、单元测试和网页构建 CI。
-- [ ] 服务端权限加固、TURN 中继部署及依赖安全升级。
-- [ ] 真实设备上的多人会议、媒体权限和跨网络兼容性验证。
-
-实施与验证记录见 [桌面发布说明](docs/desktop-release-plan.md)。
-
-参与贡献：欢迎通过 [Issues](https://github.com/Mutantcat-Working-Group/GooseMeeting/issues) 报告问题或提交 Pull Request。复现信息请包含操作系统、浏览器、Node.js 版本、操作步骤及脱敏日志；不要在公开反馈中提交令牌、房间密码或其他敏感信息。提交代码前请运行代码检查、单元测试和生产构建。涉及 WebRTC 的修改应补充对应回归测试，并说明实际验证的平台与网络环境。
-
-### 十二、相关项目与协议
+### 十、相关项目与协议
 - 上游项目：
   - [MeetingWeb](https://github.com/nnn149/MeetingWeb)：原始会议前端。
   - [MeetingServer](https://github.com/nnn149/MeetingServer)：兼容后端参考，部署前请审查授权实现。
   - [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)：后台管理界面基础。
   - [Tauri](https://github.com/tauri-apps/tauri)：跨平台桌面框架。
-- 本项目基于 [MeetingWeb](https://github.com/nnn149/MeetingWeb)，后台管理界面继承自 [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)。感谢原作者与贡献者。
-- 本项目以 **MIT 协议**发布，完整条款见 [LICENSE](LICENSE)。保留原有版权声明；复制或使用本项目实质性部分时须包含版权与许可声明。第三方依赖仍受各自协议约束。
+- 本项目基于 [MeetingWeb](https://github.com/nnn149/MeetingWeb)，后台管理界面继承自 [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)，感谢原仓库及贡献者。
+- 本项目以 **MIT 协议**发布，完整条款见 [LICENSE](LICENSE)。已有版权声明予以保留，复制或实质部分使用需包含版权与许可声明；第三方依赖遵循各自的许可证。
