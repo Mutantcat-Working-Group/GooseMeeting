@@ -42,11 +42,22 @@
           <a target="_blank" rel="noopener noreferrer" href="https://github.com/Mutantcat-Working-Group/GooseMeeting/blob/master/LICENSE">
             <el-dropdown-item>MIT License</el-dropdown-item>
           </a>
+          <el-dropdown-item @click.native="aboutVisible = true">
+            <span style="display:block;">关于</span>
+          </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+
+      <el-dialog :visible.sync="aboutVisible" title="关于" width="30%" append-to-body>
+        <p>发行方：异猫工作群（mutantcat.org）</p>
+        <p>
+          GitHub：
+          <a href="https://github.com/Mutantcat-Working-Group" target="_blank" rel="noopener noreferrer">https://github.com/Mutantcat-Working-Group</a>
+        </p>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -68,6 +79,12 @@ export default {
     Screenfull,
     SizeSelect,
     Search
+  },
+  data() {
+    return {
+      // 发行方信息：由异猫工作群（mutantcat.org）发行。
+      aboutVisible: false
+    }
   },
   computed: {
     ...mapGetters([
