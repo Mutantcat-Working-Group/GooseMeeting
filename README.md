@@ -16,6 +16,7 @@
 - 音视频通过 WebRTC 点对点传输，WebSocket 用于会议信令和聊天。当前采用多人点对点连接，参与人数增加时，每位客户端的连接数、上行带宽和 CPU 消耗都会增加。
 - 产品中文名为**大鹅会议**，英文名为 `goosemeeting`；npm 包名为 `org.mutantcat.goosemeeting`，不作为 API 路径前缀。
 - 当前版本：**1.0.20260920**。本仓库提供 Vue 网页客户端和 Tauri 2 桌面客户端，后端需要独立部署，不包含 Java 包或 Maven 模块。
+- **发行方** 由异猫工作群（mutantcat.org）发行，GitHub: https://github.com/Mutantcat-Working-Group
 
 核心价值：不依赖第三方会议服务，网页、Windows、macOS、Linux 四端同一套界面与信令逻辑，后端自部署后即可开会。
 
@@ -195,11 +196,17 @@ vue.config.js          前端构建与开发服务配置
 ```
 图标统一使用根目录的 `logo.png`：README 直接引用原图，侧栏使用由它生成的 `src/assets/logo.png` 小尺寸图片，网页 favicon 和 `src-tauri/icons/` 中的桌面图标也由它生成。更换源图后需同步重新生成图标并构建安装包；已发布的安装包不会随源码更新自动改变。
 
-### 十、相关项目与协议
-- 上游项目：
-  - [MeetingWeb](https://github.com/nnn149/MeetingWeb)：原始会议前端。
-  - [MeetingServer](https://github.com/nnn149/MeetingServer)：兼容后端参考，部署前请审查授权实现。
-  - [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)：后台管理界面基础。
-  - [Tauri](https://github.com/tauri-apps/tauri)：跨平台桌面框架。
-- 本项目基于 [MeetingWeb](https://github.com/nnn149/MeetingWeb)，后台管理界面继承自 [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)，感谢原仓库及贡献者。
-- 本项目以 **MIT 协议**发布，完整条款见 [LICENSE](LICENSE)。已有版权声明予以保留，复制或实质部分使用需包含版权与许可声明；第三方依赖遵循各自的许可证。
+### 十、上游项目与协议
+
+- [MeetingWeb](https://github.com/nnn149/MeetingWeb)：原始会议前端。
+- [MeetingServer](https://github.com/nnn149/MeetingServer)：兼容后端参考，部署前请审查授权实现。
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)：后台管理界面基础。
+- [Tauri](https://github.com/tauri-apps/tauri)：跨平台桌面框架。
+
+本项目以 **MIT 协议**发布，完整条款见 [LICENSE](LICENSE)。已有版权声明予以保留，复制或实质部分使用需包含版权与许可声明；第三方依赖遵循各自的许可证。
+
+---
+
+## 致谢
+
+本项目是 [nnn149/MeetingWeb](https://github.com/nnn149/MeetingWeb) 的 Fork，在其基础上继续维护与改进；后台管理界面继承自 [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)。感谢原仓库及贡献者的优秀开源工作。

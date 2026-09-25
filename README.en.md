@@ -16,6 +16,7 @@
 - WebRTC carries audio and video over peer-to-peer connections. WebSocket carries signaling and chat messages. The current multi-party peer-to-peer topology increases each client's connection count, upload bandwidth, and CPU usage as more participants join.
 - Product name: **大鹅会议** in Chinese, `goosemeeting` in English; npm package name is `org.mutantcat.goosemeeting` and is not an API path prefix.
 - Current version: **1.0.20260920**. This repository provides a Vue web client and a Tauri 2 desktop client. The backend must be deployed separately; no Java packages or Maven modules are included.
+- **Publisher** Mutantcat Working Group (mutantcat.org) · GitHub: https://github.com/Mutantcat-Working-Group
 
 Core value: no third-party meeting service is required. Web, Windows, macOS and Linux share one interface and signaling implementation, so meetings start as soon as you deploy your own backend.
 
@@ -193,11 +194,11 @@ vue.config.js           Frontend build and development server configuration
 ```
 The root `logo.png` is the shared icon source: the READMEs reference it directly, while the sidebar uses a smaller generated image at `src/assets/logo.png`. The web favicon and desktop icons in `src-tauri/icons/` are also generated from it. Regenerate the icons and rebuild installers after replacing the source image; previously published installers do not change with source updates.
 
-### 10. Related Projects and License
-- Upstream projects:
-  - [MeetingWeb](https://github.com/nnn149/MeetingWeb): Original meeting frontend.
-  - [MeetingServer](https://github.com/nnn149/MeetingServer): Compatible backend reference; review authorization before deployment.
-  - [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin): Admin interface foundation.
-  - [Tauri](https://github.com/tauri-apps/tauri): Cross-platform desktop framework.
-- This project is based on [MeetingWeb](https://github.com/nnn149/MeetingWeb), with an admin interface inherited from [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin). Thanks to the original authors and contributors.
-- This project is released under the **MIT License**. See [LICENSE](LICENSE) for the full terms. Existing copyright notices are retained; copies or substantial portions of the software must include the copyright and permission notices. Third-party dependencies remain subject to their own licenses.
+### 10. Upstream Projects and License
+
+- [MeetingWeb](https://github.com/nnn149/MeetingWeb): Original meeting frontend.
+- [MeetingServer](https://github.com/nnn149/MeetingServer): Compatible backend reference; review authorization before deployment.
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin): Admin interface foundation.
+- [Tauri](https://github.com/tauri-apps/tauri): Cross-platform desktop framework.
+
+This project is released under the **MIT License**. See [LICENSE](LICENSE) for the full terms. Existing copyright notices are retained; copies or substantial portions of the software must include the copyright and permission notices. Third-party dependencies remain subject to their own licenses.
